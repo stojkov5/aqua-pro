@@ -40,18 +40,11 @@ const Schedule = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.h1
-            className="schedule-heading"
-            variants={fadeIn}
-            custom={0}
-          >
+          <motion.h1 className="schedule-heading" variants={fadeIn} custom={0}>
             {t("schedule.title")}
           </motion.h1>
 
-          <motion.div
-            className="schedule-table-wrapper"
-            variants={slideIn}
-          >
+          <motion.div className="schedule-table-wrapper" variants={slideIn}>
             <table className="custom-schedule-table w-full">
               <thead>
                 <tr>
@@ -72,11 +65,16 @@ const Schedule = () => {
                 {/* First row */}
                 <tr>
                   <td>11:00</td>
-                  <td></td><td></td><td></td><td></td><td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                   <td>
                     <div>
                       <span className="roster roster-multi">
-                        {t("schedule.roster")} <span className="roster-1">1</span>;
+                        {t("schedule.roster")}{" "}
+                        <span className="roster-1">1</span>;
                         <span className="roster-2">2</span>;
                         <span className="roster-3">3</span>;
                         <span className="roster-4">4</span>
@@ -88,7 +86,8 @@ const Schedule = () => {
                   <td>
                     <div>
                       <span className="roster roster-multi">
-                        {t("schedule.roster")} <span className="roster-1">1</span>;
+                        {t("schedule.roster")}{" "}
+                        <span className="roster-1">1</span>;
                         <span className="roster-2">2</span>;
                         <span className="roster-3">3</span>;
                         <span className="roster-4">4</span>
@@ -105,33 +104,36 @@ const Schedule = () => {
                 <tr>
                   <td>17:00</td>
                   {[...Array(5)].map((_, i) =>
-                    i === 0 || i === 1 || i === 2 || i === 4 ? (
+                    i === 0 || i === 2 || i === 4 ? (
                       <td key={i}>
                         <div>
                           <span className="roster">
-                            {t("schedule.roster")} <span className="roster-1">1</span>;
+                            {t("schedule.roster")}{" "}
+                            <span className="roster-1">1</span>;
                             <span className="roster-2">2</span>;
                             <span className="roster-4">4</span>
                           </span>
                           <br />
-                          <small>{t("schedule.smallPool")}</small>
+                          <small>{t("schedule.bigSmallPool")}</small>
                         </div>
                       </td>
                     ) : (
                       <td key={i}></td>
                     )
                   )}
-                  <td></td><td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
 
                 <tr>
                   <td>18:00</td>
                   {[...Array(5)].map((_, i) =>
-                    i === 0 || i === 1 || i === 2 || i === 4 ? (
+                    i === 0 || i === 2 || i === 4 ? (
                       <td key={i}>
                         <div>
                           <span className="roster">
-                            {t("schedule.roster")} <span className="roster-1">1</span>;
+                            {t("schedule.roster")}{" "}
+                            <span className="roster-1">1</span>;
                             <span className="roster-3">3</span>
                           </span>
                           <br />
@@ -142,21 +144,31 @@ const Schedule = () => {
                       <td key={i}></td>
                     )
                   )}
-                  <td></td><td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
 
                 <tr>
                   <td>21:00</td>
-                  {[0, 2, 3].map((i) => (
-                    <td key={i}>
-                      <div>
-                        <span className="aqua">{t("schedule.aquaAerobic")}</span>
-                        <br />
-                        <small>{t("schedule.smallPool")}</small>
-                      </div>
-                    </td>
-                  ))}
-                  <td></td><td></td><td></td><td></td>
+                  {[...Array(5)].map((_, i) =>
+                    i === 1 || i === 3 ? (
+                      <td key={i}>
+                        <div>
+                          <span className="roster">
+                            {t("schedule.aquaAerobic")}{" "}
+                            <span className="roster-1">1</span>;
+                            <span className="roster-3">3</span>
+                          </span>
+                          <br />
+                          <small>{t("schedule.smallPool")}</small>
+                        </div>
+                      </td>
+                    ) : (
+                      <td key={i}></td>
+                    )
+                  )}
+                  <td></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -174,7 +186,9 @@ const Schedule = () => {
                 >
                   {index === 0 && (
                     <>
-                      <h2 className="schedule-subtitle">{t("schedule.rosterLevels")}</h2>
+                      <h2 className="schedule-subtitle">
+                        {t("schedule.rosterLevels")}
+                      </h2>
                       <div className="schedule-table-wrapper">
                         <table className="custom-schedule-table small">
                           <thead>
@@ -184,11 +198,28 @@ const Schedule = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr><td className="roster-1">Roster 1</td><td>{rosters["1"]}</td></tr>
-                            <tr><td className="roster-2">Roster 2</td><td>{rosters["2"]}</td></tr>
-                            <tr><td className="roster-3">Roster 3</td><td>{rosters["3"]}</td></tr>
-                            <tr><td className="roster-4">Roster 4</td><td>{rosters["4"]}</td></tr>
-                            <tr><td className="aqua">{t("schedule.aquaAerobic")}</td><td>{rosters["aqua"]}</td></tr>
+                            <tr>
+                              <td className="roster-1">{t("schedule.rosters.roster")} 1</td>
+                              <td>{rosters["1"]}</td>
+                            </tr>
+                            <tr>
+                              <td className="roster-2">{t("schedule.rosters.roster")} 2</td>
+                              <td>{rosters["2"]}</td>
+                            </tr>
+                            <tr>
+                              <td className="roster-3">{t("schedule.rosters.roster")} 3</td>
+                              <td>{rosters["3"]}</td>
+                            </tr>
+                            <tr>
+                              <td className="roster-4">{t("schedule.rosters.roster")} 4</td>
+                              <td>{rosters["4"]}</td>
+                            </tr>
+                            <tr>
+                              <td className="aqua">
+                                {t("schedule.aquaAerobic")}
+                              </td>
+                              <td>{rosters["aqua"]}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -197,7 +228,9 @@ const Schedule = () => {
 
                   {index === 1 && (
                     <>
-                      <h2 className="schedule-subtitle">{t("schedule.sessionPerWeek")}</h2>
+                      <h2 className="schedule-subtitle">
+                        {t("schedule.sessionPerWeek")}
+                      </h2>
                       <div className="schedule-table-wrapper">
                         <table className="custom-schedule-table small w-full">
                           <thead>
@@ -210,16 +243,22 @@ const Schedule = () => {
                           </thead>
                           <tbody>
                             <tr>
-                              <td className="roster-1">Roster 1</td>
-                              {sessions.r1.map((v, i) => <td key={i}>{v}</td>)}
+                              <td className="roster-1">{t("schedule.sessions.roster")} 1</td>
+                              {sessions.r1.map((v, i) => (
+                                <td key={i}>{v}</td>
+                              ))}
                             </tr>
                             <tr>
-                              <td className="roster-2">Roster 2</td>
-                              {sessions.r2.map((v, i) => <td key={i}>{v}</td>)}
+                              <td className="roster-2">{t("schedule.sessions.roster")} 2</td>
+                              {sessions.r2.map((v, i) => (
+                                <td key={i}>{v}</td>
+                              ))}
                             </tr>
                             <tr>
-                              <td className="roster-3">Roster 3</td>
-                              {sessions.r3.map((v, i) => <td key={i}>{v}</td>)}
+                              <td className="roster-3">{t("schedule.sessions.roster")} 3</td>
+                              {sessions.r3.map((v, i) => (
+                                <td key={i}>{v}</td>
+                              ))}
                             </tr>
                           </tbody>
                         </table>
@@ -229,7 +268,9 @@ const Schedule = () => {
 
                   {index === 2 && (
                     <>
-                      <h2 className="schedule-subtitle">{t("schedule.teamManagement")}</h2>
+                      <h2 className="schedule-subtitle">
+                        {t("schedule.teamManagement")}
+                      </h2>
                       <div className="schedule-table-wrapper">
                         <table className="custom-schedule-table small w-full">
                           <thead>

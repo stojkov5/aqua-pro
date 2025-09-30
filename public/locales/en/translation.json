@@ -312,6 +312,7 @@
     "teamManagement": "Team Management",
 
     "rosters": {
+      "roster": "Roster",
       "1": "4–6+ yo – Fundamentals",
       "2": "7–9; 10–12; 13–15+ – Learn to swim / Training to train",
       "3": "10–12; 13–15; 16+ – Competition Squad",
@@ -320,6 +321,7 @@
     },
 
     "sessions": {
+      "roster": "Roster",
       "header": ["4–6+", "7–9", "10–12", "13–15+", "16+"],
       "r1": ["2", "", "", "", ""],
       "r2": ["", "2", "3", "3", ""],
@@ -329,7 +331,7 @@
     "team": [
       { "first": "M-r Martin", "last": "Stefanovski" },
       { "first": "Vesna", "last": "Trajkovska" },
-      { "first": "Sotir - Coci", "last": "Trajkovski" },
+      { "first": "Sotir", "last": "Trajkovski" },
       { "first": "Stefan", "last": "Stefanovski" },
       { "first": "Jovan", "last": "Vaklinski" },
       { "first": "Ilija", "last": "Stojanovski" },
