@@ -327,15 +327,18 @@
       "r2": ["", "2", "3", "3", ""],
       "r3": ["", "", "4", "4", "5"]
     },
+    "name": "Name",
+    "surname": "Surname",
 
     "team": [
-      { "first": "M-r Martin", "last": "Stefanovski" },
-      { "first": "Vesna", "last": "Trajkovska" },
-      { "first": "Sotir", "last": "Trajkovski" },
-      { "first": "Stefan", "last": "Stefanovski" },
+      { "first": "Martin", "last": "Stefanovski" },
+      { "first": "Natasha", "last": "Meshkovska" },
+      { "first": "Sotircho", "last": "Trajkovski" },
       { "first": "Jovan", "last": "Vaklinski" },
-      { "first": "Ilija", "last": "Stojanovski" },
-      { "first": "Prof. Natasha", "last": "Meshkovska" }
+      { "first": "Vesna", "last": "Trajkovska" },
+      { "first": "Pavle", "last": "Stojcheski" },
+      { "first": "Aleksandar", "last": "Smilanovski" },
+      { "first": "Ivona", "last": "Spasovska" }
     ]
   },
   "competitionSquad": {

@@ -175,126 +175,137 @@ const Schedule = () => {
           </motion.div>
 
           <Row gutter={[16, 16]} className="mt-10">
-            {[0, 1, 2].map((index) => (
-              <Col xs={24} md={8} key={index}>
-                <motion.div
-                  variants={fadeIn}
-                  custom={index + 1}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  {index === 0 && (
-                    <>
-                      <h2 className="schedule-subtitle">
-                        {t("schedule.rosterLevels")}
-                      </h2>
-                      <div className="schedule-table-wrapper">
-                        <table className="custom-schedule-table small">
-                          <thead>
-                            <tr>
-                              <th>{t("schedule.roster")}</th>
-                              <th>{t("schedule.ageGroups")}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="roster-1">{t("schedule.rosters.roster")} 1</td>
-                              <td>{rosters["1"]}</td>
-                            </tr>
-                            <tr>
-                              <td className="roster-2">{t("schedule.rosters.roster")} 2</td>
-                              <td>{rosters["2"]}</td>
-                            </tr>
-                            <tr>
-                              <td className="roster-3">{t("schedule.rosters.roster")} 3</td>
-                              <td>{rosters["3"]}</td>
-                            </tr>
-                            <tr>
-                              <td className="roster-4">{t("schedule.rosters.roster")} 4</td>
-                              <td>{rosters["4"]}</td>
-                            </tr>
-                            <tr>
-                              <td className="aqua">
-                                {t("schedule.aquaAerobic")}
-                              </td>
-                              <td>{rosters["aqua"]}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </>
-                  )}
+  {[0, 1, 2].map((index) => {
+    let mdSpan;
 
-                  {index === 1 && (
-                    <>
-                      <h2 className="schedule-subtitle">
-                        {t("schedule.sessionPerWeek")}
-                      </h2>
-                      <div className="schedule-table-wrapper">
-                        <table className="custom-schedule-table small w-full">
-                          <thead>
-                            <tr>
-                              <th>{t("schedule.ageGroupsShort")}</th>
-                              {sessions.header.map((age, i) => (
-                                <th key={i}>{age}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="roster-1">{t("schedule.sessions.roster")} 1</td>
-                              {sessions.r1.map((v, i) => (
-                                <td key={i}>{v}</td>
-                              ))}
-                            </tr>
-                            <tr>
-                              <td className="roster-2">{t("schedule.sessions.roster")} 2</td>
-                              {sessions.r2.map((v, i) => (
-                                <td key={i}>{v}</td>
-                              ))}
-                            </tr>
-                            <tr>
-                              <td className="roster-3">{t("schedule.sessions.roster")} 3</td>
-                              {sessions.r3.map((v, i) => (
-                                <td key={i}>{v}</td>
-                              ))}
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </>
-                  )}
+    if (index === 0) {
+      mdSpan = 8;
+    } else if (index === 1) {
+      mdSpan = 10;
+    } else {
+      mdSpan = 6;
+    }
 
-                  {index === 2 && (
-                    <>
-                      <h2 className="schedule-subtitle">
-                        {t("schedule.teamManagement")}
-                      </h2>
-                      <div className="schedule-table-wrapper">
-                        <table className="custom-schedule-table small w-full">
-                          <thead>
-                            <tr>
-                              <th>{t("schedule.days.time")}</th>
-                              <th>{t("schedule.days.sunday")}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {team.map((person, i) => (
-                              <tr key={i}>
-                                <td>{person.first}</td>
-                                <td>{person.last}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </>
-                  )}
-                </motion.div>
-              </Col>
-            ))}
-          </Row>
+    return (
+      <Col xs={24} lg={mdSpan} key={index}>
+        <motion.div
+          variants={fadeIn}
+          custom={index + 1}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {index === 0 && (
+            <>
+              <h2 className="schedule-subtitle">
+                {t("schedule.rosterLevels")}
+              </h2>
+              <div className="schedule-table-wrapper">
+                <table className="custom-schedule-table small">
+                  <thead>
+                    <tr>
+                      <th>{t("schedule.roster")}</th>
+                      <th>{t("schedule.ageGroups")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="roster-1">{t("schedule.rosters.roster")} 1</td>
+                      <td>{rosters["1"]}</td>
+                    </tr>
+                    <tr>
+                      <td className="roster-2">{t("schedule.rosters.roster")} 2</td>
+                      <td>{rosters["2"]}</td>
+                    </tr>
+                    <tr>
+                      <td className="roster-3">{t("schedule.rosters.roster")} 3</td>
+                      <td>{rosters["3"]}</td>
+                    </tr>
+                    <tr>
+                      <td className="roster-4">{t("schedule.rosters.roster")} 4</td>
+                      <td>{rosters["4"]}</td>
+                    </tr>
+                    <tr>
+                      <td className="aqua">{t("schedule.aquaAerobic")}</td>
+                      <td>{rosters["aqua"]}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+
+          {index === 1 && (
+            <>
+              <h2 className="schedule-subtitle">
+                {t("schedule.sessionPerWeek")}
+              </h2>
+              <div className="schedule-table-wrapper">
+                <table className="custom-schedule-table small w-full">
+                  <thead>
+                    <tr>
+                      <th>{t("schedule.ageGroupsShort")}</th>
+                      {sessions.header.map((age, i) => (
+                        <th key={i}>{age}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="roster-1">{t("schedule.sessions.roster")} 1</td>
+                      {sessions.r1.map((v, i) => (
+                        <td key={i}>{v}</td>
+                      ))}
+                    </tr>
+                    <tr>
+                      <td className="roster-2">{t("schedule.sessions.roster")} 2</td>
+                      {sessions.r2.map((v, i) => (
+                        <td key={i}>{v}</td>
+                      ))}
+                    </tr>
+                    <tr>
+                      <td className="roster-3">{t("schedule.sessions.roster")} 3</td>
+                      {sessions.r3.map((v, i) => (
+                        <td key={i}>{v}</td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+
+          {index === 2 && (
+            <>
+              <h2 className="schedule-subtitle">
+                {t("schedule.teamManagement")}
+              </h2>
+              <div className="schedule-table-wrapper">
+                <table className="custom-schedule-table small w-full">
+                  <thead>
+                    <tr>
+                      <th>{t("schedule.name")}</th>
+                      <th>{t("schedule.surname")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {team.map((person, i) => (
+                      <tr key={i}>
+                        <td>{person.first}</td>
+                        <td>{person.last}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </motion.div>
+      </Col>
+    );
+  })}
+</Row>
+
         </motion.div>
       </Col>
     </Row>
