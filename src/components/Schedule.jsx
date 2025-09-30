@@ -156,8 +156,7 @@ const Schedule = () => {
                         <div>
                           <span className="roster">
                             {t("schedule.aquaAerobic")}{" "}
-                            <span className="roster-1">1</span>;
-                            <span className="roster-3">3</span>
+                            
                           </span>
                           <br />
                           <small>{t("schedule.smallPool")}</small>
