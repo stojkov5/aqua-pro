@@ -10,7 +10,7 @@
   "home": {
     "title": "Dive into Excellence. Swim with Confidence.",
     "subtitle": "World-class swim training for all ages – right here in Skopje.",
-    "bookLesson": "Book A Trial Lesson",
+    "bookLesson": "Register",
     "learnMore": "Learn More"
   },
   "aboutSection": {
@@ -105,17 +105,18 @@
     "plans": [
       {
         "title": "Monthly Plan",
-        "price": "€50 / month",
+        "price": "3000 / month",
         "details": "Includes 2 sessions per week."
       },
       {
         "title": "Private Lessons",
-        "price": "€25 / session",
+        "price": "€1500 / session",
         "details": "One-on-one coaching, flexible scheduling."
       },
       {
         "title": "Family Package",
-        "price": "€120 / month",
+        "price": "5500 / month for 2 kids",
+        "price2": "7500 / month for 3 kids",
         "details": "Covers up to 3 family members, 2 sessions/week each."
       }
     ],
@@ -124,7 +125,7 @@
   "about": {
     "title": "Recognisable for elite organisation, professional work by the coaches, healthy swimmers, and happy parents",
     "visionTitle": "VISION",
-    "visionText": "Swimming club AQUA PRO – ACADEMY Martin Stefanovski, through a professional coaching program, to enable every swimmer to gradually and in a healthy way develop their swimming skills to the limit of their capabilities. To be a club from which top and quality swimmers will emerge, representatives who will represent the country in major European and world competitions. Let's advocate for the introduction of swimming in primary schools as a compulsory sport, and the promotion of lifelong swimming as an integral part of modern and cultural living.",
+    "visionText": "Swimming club AQUA PRO – ACADEMY, through a professional coaching program, to enable every swimmer to gradually and in a healthy way develop their swimming skills to the limit of their capabilities. To be a club from which top and quality swimmers will emerge, representatives who will represent the country in major European and world competitions. Let's advocate for the introduction of swimming in primary schools as a compulsory sport, and the promotion of lifelong swimming as an integral part of modern and cultural living.",
     "missionTitle": "MISSION",
     "missionText": "Our mission is for every child to develop swimming skills from a young age, to raise the quality of sports swimming to the highest level, to increase the mass of swimming in Skopje and beyond, and to run the club in a modern and high-quality way. Our club should be recognised for top organisation, professional work of trainers, healthy swimmers and satisfied parents.",
     "goalsTitle": "GOALS AND OBJECTIVES",
@@ -242,7 +243,7 @@
     "pool": "25m pool • 8 lanes • Electronic timing",
     "temp": "Water Temp: 26.5 °C",
     "entryFee": "Entry Fee: 350 MKD / 6€ per event",
-    "deadline": "Deadline: 20 Dec 2024 at 23:59",
+    "deadline": "Deadline: 20 Dec 2025 at 23:59",
     "rules": "Rules: WA, LEN, National Federation",
     "download": "Download Official Cup PDF",
     "locationContact": "Location & Contact",
@@ -302,6 +303,7 @@
     },
     "smallPool": "(small pool)",
     "bigSmallPool": "(big + small pool)",
+    "bigPool": "(big pool)",
     "roster": "Roster",
     "aquaAerobic": "Aqua Aerobic",
 

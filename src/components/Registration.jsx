@@ -69,6 +69,9 @@ const Registration = () => {
                 <motion.div className="pricing-card" variants={itemVariants}>
                   <h3 className="text-xl font-semibold mb-2">{tier.title}</h3>
                   <p className="text-lg font-bold mb-1">{tier.price}</p>
+                  {tier.price2 && (
+                    <p className="text-lg font-bold mb-1">{tier.price2}</p>
+                  )}
                   <p className="text-sm text-gray-100">{tier.details}</p>
                 </motion.div>
               </Col>
