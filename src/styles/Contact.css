@@ -1,0 +1,81 @@
+/* Container layout */
+.contact-container {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* Main row */
+.contact-row {
+  width: 100%;
+}
+
+/* Content box */
+.contact-content {
+  background-color: rgba(0, 124, 247, 0.15);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 1rem;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Title */
+.contact-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+/* Info box styling */
+.contact-text {
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  color: #e0e0e0;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+  font-weight: 300;
+  text-align: center;
+}
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* space between icon and text */
+  color: #ffffff; /* Viber’s purple tone */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #2f8dd0;
+  text-decoration: underline;
+}
+
+.contact-icon {
+  font-size: 1.4rem;
+}
+
+
+
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .contact-content {
+    padding: 30px 20px;
+  }
+
+  .contact-title {
+    font-size: 1.8rem;
+  }
+
+  .contact-info-box {
+    padding: 20px;
+  }
+}

@@ -24,6 +24,8 @@ const navLinks = [
   { to: "/squad", label: "COMPETITION SQUAD" },
   { to: "/programs", label: "COMPETITIONS" },
   { to: "/shop", label: "TEAM SHOP" },
+  // 👇 Added Contact link
+  { to: "/contact", label: "CONTACT" },
 ];
 
 export default function Navbar() {

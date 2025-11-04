@@ -11,6 +11,7 @@ import TeamShop from "../src/pages/TeamShop";
 import Cart from "../src/components/Cart";
 import Gallery from "../src/components/Gallery";
 import PrivacyPolicy from "../src/components/PrivacyPolicy";
+import Contact from "../src/pages/Contact";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -56,7 +57,11 @@ const routes = createBrowserRouter([
       {
         path: "/faq",
         element: <PrivacyPolicy />,
-      }
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
     ],
   },
 ]);
