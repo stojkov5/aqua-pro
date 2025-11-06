@@ -45,7 +45,7 @@ const products = [
   {
     id: 6,
     name: "Team Backpack",
-    image: "",
+    image: "/Products/Backpack.webp",
     description: "30 EUR / 1800 MKD",
     hasSizes: false,
   },
