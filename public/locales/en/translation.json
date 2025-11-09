@@ -6,7 +6,9 @@
   "SCHEDULE": "SCHEDULE",
   "COMPETITION SQUAD": "COMPETITION SQUAD",
   "COMPETITIONS": "COMPETITIONS",
+  "COMPETITIONS SCHEDULE": "CALENDAR",
   "TEAM SHOP": "TEAM SHOP",
+  "CONTACT": "CONTACT",
   "home": {
     "title": "Dive into Excellence. Swim with Confidence.",
     "subtitle": "World-class swim training for all ages – right here in Skopje.",
@@ -240,10 +242,11 @@
   "programs": {
     "title": "Aqua Pro Talent Cup ",
     "eventInfo": "Event Info",
+    "date": "Date: 28 Dec 2025 (Sunday)",
     "pool": "25m pool • 8 lanes • Electronic timing",
     "temp": "Water Temp: 26.5 °C",
     "entryFee": "Entry Fee: 350 MKD / 6€ per event",
-    "deadline": "Deadline: 20 Dec 2025 at 23:59",
+    "deadline": "Deadline: 26 Dec 2025 at 23:59",
     "rules": "Rules: WA, LEN, National Federation",
     "download": "Download Official Cup PDF",
     "locationContact": "Location & Contact",
@@ -451,5 +454,13 @@
       "title": "Consent",
       "text": "By using our website, you consent to this Privacy Policy and its Terms & Conditions."
     }
+  },
+  "contact-us": {
+    "title": "Contact Us",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "viber": "Join Viber Community",
+    "whatsapp": "Join WhatsApp Community"
   }
 }

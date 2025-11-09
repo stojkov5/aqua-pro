@@ -22,9 +22,15 @@ const navLinks = [
     ],
   },
   { to: "/squad", label: "COMPETITION SQUAD" },
-  { to: "/programs", label: "COMPETITIONS" },
+  {
+    to: "/competition",
+    label: "COMPETITIONS",
+    dropdown: true,
+    children: [
+      { to: "/competitions-schedule", label: "COMPETITIONS SCHEDULE" },
+    ],
+  },
   { to: "/shop", label: "TEAM SHOP" },
-  // 👇 Added Contact link
   { to: "/contact", label: "CONTACT" },
 ];
 
@@ -33,7 +39,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoverXY, setHoverXY] = useState({ x: 0, y: 0 });
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // 👇 Replaced dropdownOpen with index-based logic
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const dropdownTimeoutRef = useRef(null);
 
   const location = useLocation();
@@ -48,14 +56,14 @@ export default function Navbar() {
     });
   };
 
-  const handleDropdownEnter = () => {
+  const handleDropdownEnter = (index) => {
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
-    setDropdownOpen(true);
+    setOpenDropdownIndex(index);
   };
 
   const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
-      setDropdownOpen(false);
+      setOpenDropdownIndex(null);
     }, 200);
   };
 
@@ -77,7 +85,7 @@ export default function Navbar() {
                     <div
                       key={item.label}
                       className="relative"
-                      onMouseEnter={handleDropdownEnter}
+                      onMouseEnter={() => handleDropdownEnter(index)}
                       onMouseLeave={handleDropdownLeave}
                     >
                       <NavLink to={item.to}>
@@ -85,9 +93,13 @@ export default function Navbar() {
                           <button
                             onMouseMove={(e) => handleMouseMove(e, index)}
                             onMouseLeave={() => setHoveredIndex(null)}
-                            className={`nav-link relative ${isActive ? "active" : ""}`}
+                            className={`nav-link relative ${
+                              isActive ? "active" : ""
+                            }`}
                           >
-                            <span className="relative z-10">{t(item.label)}</span>
+                            <span className="relative z-10">
+                              {t(item.label)}
+                            </span>
                             {hoveredIndex === index && (
                               <span
                                 className="splash"
@@ -102,15 +114,19 @@ export default function Navbar() {
                         )}
                       </NavLink>
 
-                      {dropdownOpen && (
+                      {openDropdownIndex === index && (
                         <div className="dropdown-menu absolute top-full mt-2 left-0 gap-2">
                           {item.children.map((child, i) => (
                             <NavLink to={child.to} key={child.to}>
                               {({ isActive }) => (
                                 <button
-                                  onMouseMove={(e) => handleMouseMove(e, 999 + i)}
+                                  onMouseMove={(e) =>
+                                    handleMouseMove(e, 999 + i)
+                                  }
                                   onMouseLeave={() => setHoveredIndex(null)}
-                                  className={`nav-link relative ${isActive ? "active" : ""}`}
+                                  className={`nav-link relative ${
+                                    isActive ? "active" : ""
+                                  }`}
                                 >
                                   <span className="relative z-10">
                                     {t(child.label)}
@@ -141,7 +157,9 @@ export default function Navbar() {
                       <button
                         onMouseMove={(e) => handleMouseMove(e, index)}
                         onMouseLeave={() => setHoveredIndex(null)}
-                        className={`nav-link relative ${isActive ? "active" : ""}`}
+                        className={`nav-link relative ${
+                          isActive ? "active" : ""
+                        }`}
                       >
                         <span className="relative z-10">{t(item.label)}</span>
                         {(hoveredIndex === index || isActive) && (
@@ -184,15 +202,16 @@ export default function Navbar() {
             <div className="flex flex-col items-center gap-6">
               {navLinks.map((item) =>
                 item.dropdown ? (
-                  <>
+                  <div className="flex flex-col items-center gap-6" key={item.label}>
                     <NavLink
-                      key={item.to}
                       to={item.to}
                       onClick={() => setMenuOpen(false)}
                     >
                       {({ isActive }) => (
                         <button
-                          className={`nav-link text-lg ${isActive ? "active" : ""}`}
+                          className={`nav-link text-lg ${
+                            isActive ? "active" : ""
+                          }`}
                         >
                           {t(item.label)}
                         </button>
@@ -206,14 +225,16 @@ export default function Navbar() {
                       >
                         {({ isActive }) => (
                           <button
-                            className={`nav-link text-lg ${isActive ? "active" : ""}`}
+                            className={`nav-link text-lg ${
+                              isActive ? "active" : ""
+                            }`}
                           >
                             {t(child.label)}
                           </button>
                         )}
                       </NavLink>
                     ))}
-                  </>
+                  </div>
                 ) : (
                   <NavLink
                     key={item.to}
@@ -222,7 +243,9 @@ export default function Navbar() {
                   >
                     {({ isActive }) => (
                       <button
-                        className={`nav-link text-lg ${isActive ? "active" : ""}`}
+                        className={`nav-link text-lg ${
+                          isActive ? "active" : ""
+                        }`}
                       >
                         {t(item.label)}
                       </button>

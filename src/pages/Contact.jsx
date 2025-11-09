@@ -2,23 +2,27 @@ import { Row, Col } from "antd";
 import "../styles/Contact.css";
 import { FaViber } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 const Contact = () => {
+  const { t } = useTranslation();
   return (
     <div className="contact-container">
       <Row justify="center" className="contact-row">
         <Col span={22} className="contact-content">
-          <h1 className="contact-title">Contact Us</h1>
+          <h1 className="contact-title">{t("contact-us.title")}</h1>
           <Row justify="center" gutter={[32, 32]}>
             <Col xs={24} md={12}>
               <div className="contact-text">
                 <p>
-                  <strong>Email:</strong> aquaproswim@gmail.com
+                  <strong>{t("contact-us.email")}:</strong>{" "}
+                  aquaproswim@gmail.com
                 </p>
                 <p>
-                  <strong>Phone:</strong> 071 248 750
+                  <strong>{t("contact-us.phone")}:</strong> 071 248 750
                 </p>
                 <p>
-                  <strong>Address:</strong> Skopje Sports Center
+                  <strong>{t("contact-us.address")}:</strong> Skopje Sports
+                  Center
                 </p>
               </div>
             </Col>
@@ -31,7 +35,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                 >
                   <FaViber className="contact-icon" />
-                  <span>Join Viber Community</span>
+                  <span>{t("contact-us.viber")}</span>
                 </a>
                 <br />
                 <a
@@ -41,7 +45,7 @@ const Contact = () => {
                   className="contact-link"
                 >
                   <FaWhatsapp className="contact-icon" />
-                  <span>Join WhatsApp Community</span>{" "}
+                  <span>{t("contact-us.whatsapp")}</span>{" "}
                 </a>
               </div>
             </Col>

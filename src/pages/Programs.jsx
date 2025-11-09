@@ -69,6 +69,7 @@ const Programs = () => {
                   <InfoCircleOutlined /> {t("programs.eventInfo")}
                 </h2>
                 <ul className="programs-list">
+                  <li>{t("programs.date")}</li>
                   <li>{t("programs.pool")}</li>
                   <li>{t("programs.temp")}</li>
                   <li>{t("programs.entryFee")}</li>
@@ -77,7 +78,7 @@ const Programs = () => {
                   <li>
                     📄{" "}
                     <a
-                      href="/2024 Aqua Pro Swim Meet.pdf"
+                      href="/2025 Aqua Pro Swim Meet.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="pdf-link"

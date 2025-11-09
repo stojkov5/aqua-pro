@@ -12,6 +12,7 @@ import Cart from "../src/components/Cart";
 import Gallery from "../src/components/Gallery";
 import PrivacyPolicy from "../src/components/PrivacyPolicy";
 import Contact from "../src/pages/Contact";
+import CompetitionSchedule from "../src/components/CompetitionSchedule";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -27,7 +28,7 @@ const routes = createBrowserRouter([
       },
       { path: "/levels", element: <Levels /> },
       {
-        path: "/programs",
+        path: "/competition",
         element: <Programs />,
       },
       {
@@ -62,6 +63,10 @@ const routes = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
+      {
+        path: "/competitions-schedule",
+        element: <CompetitionSchedule />,
+      }
     ],
   },
 ]);
