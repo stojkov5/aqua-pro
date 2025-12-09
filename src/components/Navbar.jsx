@@ -21,15 +21,16 @@ const navLinks = [
       { to: "/schedule", label: "SCHEDULE" },
     ],
   },
-  { to: "/squad", label: "COMPETITION SQUAD" },
   {
-    to: "/competition",
-    label: "COMPETITIONS",
+    to: "/squad",
+    label: "COMPETITION SQUAD",
     dropdown: true,
     children: [
+      { to: "/competition", label: "COMPETITIONS" },
       { to: "/competitions-schedule", label: "COMPETITIONS SCHEDULE" },
     ],
   },
+  { to: "/camps", label: "CAMPS" }, // NEW top-level link instead of COMPETITIONS
   { to: "/shop", label: "TEAM SHOP" },
   { to: "/contact", label: "CONTACT" },
 ];
@@ -40,7 +41,7 @@ export default function Navbar() {
   const [hoverXY, setHoverXY] = useState({ x: 0, y: 0 });
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  // 👇 Replaced dropdownOpen with index-based logic
+  // index-based dropdown logic
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const dropdownTimeoutRef = useRef(null);
 
@@ -199,14 +200,14 @@ export default function Navbar() {
 
         {menuOpen && isMobile && (
           <div className="mobile-menu fixed top-0 left-0 w-full h-screen bg-blue-500/30 backdrop-blur-xl text-white flex flex-col items-center justify-center z-50">
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col items-center gap-2">
               {navLinks.map((item) =>
                 item.dropdown ? (
-                  <div className="flex flex-col items-center gap-6" key={item.label}>
-                    <NavLink
-                      to={item.to}
-                      onClick={() => setMenuOpen(false)}
-                    >
+                  <div
+                    className="flex flex-col items-center gap-2"
+                    key={item.label}
+                  >
+                    <NavLink to={item.to} onClick={() => setMenuOpen(false)}>
                       {({ isActive }) => (
                         <button
                           className={`nav-link text-lg ${

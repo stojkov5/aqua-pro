@@ -1,0 +1,213 @@
+/* Wrapper keeps background fixed and full-height feel on large screens */
+.wintercamp-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Background image – change path to whatever winter image you want */
+.wintercamp-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("/WinterCamp/WinterCampHero.webp");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed !important;
+  z-index: 0;
+}
+
+/* Dark + blur overlay similar to your landing section */
+.wintercamp-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+/* Fluid main title */
+.wintercamp-title {
+  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
+  line-height: 1.15;
+  margin-bottom: 0.25rem;
+  color: #ffffff;
+}
+
+/* Fluid subtitle */
+.wintercamp-subtitle {
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  color: #e0f2ff;
+}
+
+/* Section title */
+.wintercamp-section-title {
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+/* Body text styling matching "about" section */
+.wintercamp-body-text {
+  font-size: clamp(0.95rem, 2.1vw, 1.1rem);
+  line-height: 1.7;
+  color: #f0f4ff;
+}
+
+/* Primary CTA button – glassy pill */
+.wintercamp-primary-btn {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.75rem 2.2rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  min-width: 190px;
+  color: #ffffff;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  transition: background-color 0.25s ease, transform 0.15s ease,
+    box-shadow 0.25s ease;
+}
+
+.wintercamp-primary-btn:hover {
+  background-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-1px);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.45);
+}
+
+/* Secondary CTA – outline/glass */
+.wintercamp-secondary-btn {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.7rem 1.9rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(224, 242, 254, 0.55);
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  font-size: clamp(0.9rem, 1.05vw, 1rem);
+  min-width: 170px;
+  color: #e0f2ff;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+    transform 0.15s ease;
+}
+
+.wintercamp-secondary-btn:hover {
+  background-color: rgba(15, 23, 42, 0.75);
+  border-color: rgba(224, 242, 254, 0.9);
+  transform: translateY(-1px);
+}
+
+/* Glass cards (transport, accommodation, nights) */
+.wintercamp-glass-card {
+  position: relative;
+  padding: 1.5rem 1.25rem 1.4rem;
+  border-radius: 1.25rem;
+  background-color: rgba(0, 124, 247, 0.18);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(191, 219, 254, 0.35);
+}
+
+.wintercamp-badge {
+  position: absolute;
+  top: -0.8rem;
+  left: 1.2rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e0f2ff;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.7);
+}
+
+.wintercamp-card-title {
+  margin-top: 0.7rem;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.wintercamp-card-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e5f1ff;
+}
+
+/* Side small cards (skiing, swimming, etc.) */
+.wintercamp-side-card {
+  padding: 1rem 1rem;
+  border-radius: 1.2rem;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.wintercamp-side-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #ffffff;
+}
+
+.wintercamp-side-text {
+  font-size: 0.9rem;
+  color: #e2f0ff;
+}
+
+/* Reusable block with soft blue background, like .about */
+.wintercamp-section-block {
+  background-color: rgba(0, 124, 247, 0.12);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 1.4rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(191, 219, 254, 0.35);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.5);
+}
+
+/* Conditions block: slightly darker */
+.wintercamp-conditions {
+  background-color: rgba(15, 23, 42, 0.78);
+}
+
+/* Bullet lists */
+.wintercamp-bullet-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.wintercamp-bullet-list li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e8f2ff;
+}
+
+.wintercamp-bullet-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  color: #bfdbfe;
+}
+
+/* RESPONSIVE TWEAKS */
+@media (max-width: 768px) {
+  .wintercamp-bg {
+    background-attachment: scroll !important;
+    background-position: center !important;
+  }
+
+  .wintercamp-section-block {
+    padding: 1.25rem 1.1rem;
+  }
+}

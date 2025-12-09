@@ -462,5 +462,56 @@
     "address": "Address",
     "viber": "Join Viber Community",
     "whatsapp": "Join WhatsApp Community"
+  },
+  "winterCamp": {
+    "hero": {
+      "tagline": "Aqua Pro Winter Camp 2026",
+      "title": "Skiing, Swimming and Winter Adventure in Borovets",
+      "datesLocation": "13 – 19 January 2026 · Borovets, Bulgaria",
+      "p1": "Take advantage of the opportunity for an unforgettable winter sports camp! Aqua Pro Winter Camp 2026 is intended for children who love sports, fun, new friendships and spending their winter holidays actively.",
+      "p2": "The camp offers a unique combination of skiing, swimming and educational training sessions, under 24-hour supervision by professional coaches.",
+      "pdfButton": "Winter Camp 2026 PDF"
+    },
+    "images": {
+      "borovecAlt": "Borovets winter landscape",
+      "campAlt": "Aqua Pro Winter Camp activities",
+      "poolAlt": "Swimming in an indoor pool"
+    },
+    "why": {
+      "title": "Why Aqua Pro Winter Camp?",
+      "item1": "5 days of skiing at the most famous winter resort in Bulgaria",
+      "item2": "Swimming and training program in a covered 25m pool",
+      "item3": "Fun and educational sports segment",
+      "item4": "Safety and 24/7 supervision",
+      "item5": "Perfect conditions for children 7+ years old",
+      "p1": "The camp is ideal for children who want to improve their sports skills, build self-confidence and enjoy nature and sports activities."
+    },
+    "included": {
+      "title": "What is included in the price?",
+      "item1": "Accommodation at Hotel Arena* – 6 nights, full board (buffet style)",
+      "item2": "Organized transport: Skopje – Borovets – Skopje",
+      "item3": "Swimming + sports activities",
+      "item4": "Educational workshops about healthy nutrition and sport",
+      "item5": "Constant care and professional supervision",
+      "priceLabel": "Price:",
+      "priceSingle": "• 470€ per child",
+      "priceDouble": "• 900€ for two children",
+      "notIncluded": "Not included: travel insurance, ski equipment rental, ski pass and ski instructor."
+    },
+    "location": {
+      "title": "Location: Borovets",
+      "p1": "Borovets is one of the best winter resorts in the Balkans, with modern ski lifts, slopes for beginners and advanced skiers, numerous snow sports and activities, as well as excellent hotel and entertainment facilities.",
+      "p2": "This location is chosen for its safety, modern conditions and great opportunities for sports training."
+    },
+    "registration": {
+      "title": "Registration",
+      "intro": "To secure your place, it is necessary to provide:",
+      "item1": "Copy of passport",
+      "item2": "Deposit of 100€",
+      "note": "✨ The number of places is limited. Registration is open until the group is full."
+    },
+    "contact": {
+      "title": "Contact for registration"
+    }
   }
 }
