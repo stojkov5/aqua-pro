@@ -38,7 +38,7 @@ const WinterCamp = () => {
 
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <a
-              href="/public/WinterCamp/APWinterCamp.pdf"
+              href="/WinterCamp/APWinterCamp.pdf"
               className="wintercamp-primary-btn"
               target="_blank"
             >
