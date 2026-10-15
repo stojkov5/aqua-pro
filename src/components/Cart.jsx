@@ -2,14 +2,22 @@ import React from "react";
 import "../styles/Cart.css";
 import { Row, Col } from "antd";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const SERVICE_ID = "service_8qhrp3i";
-const TEMPLATE_ID = "template_xctsb5p";
-const PUBLIC_KEY = "4S2Y830MkEiYQ3nBq";
+const submitOrder = async (order) => {
+  const response = await fetch("/api/order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(order),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || "Failed to send order.");
+  }
+  return data;
+};
 
 const Cart = () => {
   const queryClient = useQueryClient();
@@ -48,7 +56,7 @@ const Cart = () => {
   const getCartSummary = () => {
     const groupedItems = {};
     cart.forEach((item) => {
-      const key = `${item.name}_${item.size || "NoSize"}`;
+      const key = `${item.id}_${item.size || "NoSize"}`;
       if (!groupedItems[key]) {
         groupedItems[key] = { ...item, quantity: 1 };
       } else {
@@ -59,6 +67,7 @@ const Cart = () => {
     const cart_items = Object.values(groupedItems).map((item) => {
       const unitPrice = parsePrice(item.description);
       return {
+        id: item.id,
         name: item.name,
         size: item.size || "N/A",
         quantity: item.quantity,
@@ -116,7 +125,12 @@ const Cart = () => {
 
               <div className="cart-form mt-6">
                 <Formik
-                  initialValues={{ fullName: "", email: "", phone: "" }}
+                  initialValues={{
+                    fullName: "",
+                    email: "",
+                    phone: "",
+                    website: "",
+                  }}
                   validationSchema={Yup.object({
                     fullName: Yup.string().required("Full Name is required"),
                     email: Yup.string()
@@ -125,26 +139,27 @@ const Cart = () => {
                     phone: Yup.string().required("Phone number is required"),
                   })}
                   onSubmit={(values, { setSubmitting, resetForm }) => {
-                    const { cart_items, total_price } = getCartSummary();
+                    const { cart_items } = getCartSummary();
 
-                    const templateParams = {
-                      full_name: values.fullName,
+                    submitOrder({
+                      fullName: values.fullName,
                       email: values.email,
                       phone: values.phone,
-                      cart_items,
-                      total_price: `${total_price} EUR`,
-                    };
-
-                    emailjs
-                      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+                      website: values.website,
+                      items: cart_items.map((item) => ({
+                        id: item.id,
+                        size: item.size === "N/A" ? null : item.size,
+                        quantity: item.quantity,
+                      })),
+                    })
                       .then(() => {
-                        toast.success("Order email sent!");
+                        toast.success("Order sent! Check your email for confirmation.");
                         resetForm();
                         clearCart();
                       })
                       .catch((error) => {
-                        console.error("EmailJS Error:", error);
-                        toast.error("Failed to send order email.");
+                        console.error("Order error:", error);
+                        toast.error(error.message);
                       })
                       .finally(() => {
                         setSubmitting(false);
@@ -153,6 +168,15 @@ const Cart = () => {
                 >
                   {({ isValid, dirty, isSubmitting }) => (
                     <Form className="flex flex-col items-center gap-4">
+                      {/* Honeypot for spam bots — hidden from real visitors */}
+                      <Field
+                        name="website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        style={{ position: "absolute", left: "-9999px" }}
+                      />
                       <div className="form-group w-full md:w-1/2">
                         <Field
                           name="fullName"
