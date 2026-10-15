@@ -1,11 +1,11 @@
-import products from "../src/data/products.js";
+import { getSupabaseAdmin } from "./_lib/supabaseAdmin.js";
 
-// Receives a shop order from the cart page, prices it from the product list
-// (never trusting prices sent by the browser) and emails it through Resend.
+// Receives a shop order from the cart page, saves it in Supabase (which prices
+// it from the products table — never trusting prices sent by the browser) and
+// emails it through Resend.
 
 const RESEND_URL = "https://api.resend.com/emails";
 const MAX_LINES = 30;
-const MAX_QUANTITY = 20;
 
 const escapeHtml = (value) =>
   String(value).replace(
@@ -16,11 +16,6 @@ const escapeHtml = (value) =>
       ]
   );
 
-const parsePrice = (description) => {
-  const match = description.match(/(\d+(?:\.\d+)?)\s*EUR/);
-  return match ? parseFloat(match[1]) : 0;
-};
-
 const isNonEmptyString = (value, maxLength) =>
   typeof value === "string" &&
   value.trim().length > 0 &&
@@ -29,36 +24,16 @@ const isNonEmptyString = (value, maxLength) =>
 const isEmail = (value) =>
   isNonEmptyString(value, 254) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-// Turns [{ id, size, quantity }] from the browser into priced order lines.
-// Returns null if anything is invalid.
-const buildOrderLines = (items) => {
+// Keeps only the fields create_order needs; the database does the real validation.
+const sanitizeItems = (items) => {
   if (!Array.isArray(items) || items.length === 0 || items.length > MAX_LINES) {
     return null;
   }
-
-  const lines = [];
-  for (const item of items) {
-    const product = products.find((p) => p.id === item?.id);
-    const quantity = Number(item?.quantity);
-    if (!product || !Number.isInteger(quantity)) return null;
-    if (quantity < 1 || quantity > MAX_QUANTITY) return null;
-
-    let size = null;
-    if (product.hasSizes) {
-      if (!isNonEmptyString(item.size, 60)) return null;
-      size = item.size.trim();
-    }
-
-    const unitPrice = parsePrice(product.description);
-    lines.push({
-      name: product.name,
-      size,
-      quantity,
-      unitPrice,
-      subtotal: unitPrice * quantity,
-    });
-  }
-  return lines;
+  return items.map((item) => ({
+    id: Number(item?.id),
+    size: typeof item?.size === "string" ? item.size : null,
+    quantity: Number(item?.quantity),
+  }));
 };
 
 const renderItemsTable = (lines, total) => `
@@ -126,32 +101,55 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Please fill in name, email and phone." });
   }
 
-  const lines = buildOrderLines(items);
-  if (!lines) {
+  const orderItems = sanitizeItems(items);
+  if (!orderItems) {
     return res.status(400).json({ error: "Your cart contains invalid items." });
   }
 
   const { RESEND_API_KEY, ORDER_EMAIL_TO, ORDER_EMAIL_FROM } = process.env;
-  if (!RESEND_API_KEY || !ORDER_EMAIL_TO || !ORDER_EMAIL_FROM) {
-    console.error("Order email is not configured: missing env variables");
+  const supabase = getSupabaseAdmin();
+  if (!RESEND_API_KEY || !ORDER_EMAIL_TO || !ORDER_EMAIL_FROM || !supabase) {
+    console.error("Ordering is not configured: missing env variables");
     return res.status(500).json({ error: "Ordering is temporarily unavailable." });
   }
 
-  const total = lines.reduce((sum, line) => sum + line.subtotal, 0);
   const customer = {
     name: fullName.trim(),
     email: email.trim(),
     phone: phone.trim(),
   };
 
+  const { data: order, error: orderError } = await supabase.rpc("create_order", {
+    p_customer_name: customer.name,
+    p_customer_email: customer.email,
+    p_customer_phone: customer.phone,
+    p_items: orderItems,
+  });
+
+  if (orderError) {
+    // create_order raises invalid_items for unknown/inactive products, bad
+    // quantities or missing sizes; anything else is a server problem.
+    if (orderError.message?.includes("invalid_items")) {
+      return res.status(400).json({
+        error: "Some items in your cart are no longer available. Please empty your cart and add them again.",
+      });
+    }
+    console.error("Failed to save order:", orderError);
+    return res.status(502).json({ error: "Could not save your order. Please try again." });
+  }
+
+  const lines = order.items;
+  const total = order.total;
+  const orderLabel = `#${order.orderNumber}`;
+
   try {
     await sendEmail(RESEND_API_KEY, {
       from: ORDER_EMAIL_FROM,
       to: [ORDER_EMAIL_TO],
       reply_to: customer.email,
-      subject: `New shop order — ${customer.name}`,
+      subject: `New shop order ${orderLabel} — ${customer.name}`,
       html: `
-        <h2 style="font-family:Arial,sans-serif">New shop order</h2>
+        <h2 style="font-family:Arial,sans-serif">New shop order ${orderLabel}</h2>
         <p style="font-family:Arial,sans-serif;font-size:14px">
           <strong>Name:</strong> ${escapeHtml(customer.name)}<br/>
           <strong>Email:</strong> ${escapeHtml(customer.email)}<br/>
@@ -159,20 +157,19 @@ export default async function handler(req, res) {
         </p>
         ${renderItemsTable(lines, total)}
         <p style="font-family:Arial,sans-serif;font-size:12px;color:#666">Reply to this email to contact the customer.</p>`,
-      text: `New shop order\n\nName: ${customer.name}\nEmail: ${customer.email}\nPhone: ${customer.phone}\n\n${renderItemsText(lines, total)}`,
+      text: `New shop order ${orderLabel}\n\nName: ${customer.name}\nEmail: ${customer.email}\nPhone: ${customer.phone}\n\n${renderItemsText(lines, total)}`,
     });
   } catch (error) {
-    console.error("Failed to send order email:", error);
-    return res.status(502).json({ error: "Could not send your order. Please try again." });
+    // The order is already saved in Supabase, so the club can still see it there.
+    console.error(`Failed to send club email for order ${orderLabel}:`, error);
   }
 
-  // The customer confirmation is a courtesy: the order already reached the club.
   try {
     await sendEmail(RESEND_API_KEY, {
       from: ORDER_EMAIL_FROM,
       to: [customer.email],
       reply_to: ORDER_EMAIL_TO,
-      subject: "Your Aqua Pro order / Вашата нарачка од Aqua Pro",
+      subject: `Your Aqua Pro order ${orderLabel} / Вашата нарачка ${orderLabel}`,
       html: `
         <p style="font-family:Arial,sans-serif;font-size:14px">
           Hi ${escapeHtml(customer.name)},<br/><br/>
@@ -184,8 +181,8 @@ export default async function handler(req, res) {
       text: `Hi ${customer.name},\n\nThank you for your order! We will contact you soon about payment and pickup.\nВи благодариме за нарачката! Наскоро ќе ве контактираме за плаќање и подигнување.\n\n${renderItemsText(lines, total)}\n\nAqua Pro Swim · aquaproswim.com`,
     });
   } catch (error) {
-    console.error("Failed to send customer confirmation:", error);
+    console.error(`Failed to send customer confirmation for order ${orderLabel}:`, error);
   }
 
-  return res.status(200).json({ ok: true });
+  return res.status(200).json({ ok: true, orderNumber: order.orderNumber });
 }

@@ -364,7 +364,9 @@
     "addToCart": "Add to Cart",
     "selectSizePlaceholder": "Select size",
     "toastAdded": "✅ Added to cart!",
-    "toastWarning": "Please select a size before adding to cart."
+    "toastWarning": "Please select a size before adding to cart.",
+    "loading": "Loading products...",
+    "loadError": "Could not load products. Please refresh the page or try again later."
   },
   "footer": {
     "contactTitle": "Contact Us",

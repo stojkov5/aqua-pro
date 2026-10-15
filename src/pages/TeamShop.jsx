@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/TeamShop.css";
-import productsData from "../data/products";
+import { fetchProducts } from "../lib/products";
 
 // General clothing sizes
 const generalSizes = [
@@ -28,9 +28,6 @@ const femaleSizes = [
   "36 (95 / 105)", "38 (100 / 110)", "40 (105 / 115)"
 ];
 
-const fetchProducts = async () =>
-  new Promise((resolve) => setTimeout(() => resolve(productsData), 100));
-
 const getStoredCart = () => {
   try {
     const saved = localStorage.getItem("aquaProCart");
@@ -43,9 +40,14 @@ const getStoredCart = () => {
 const TeamShop = () => {
   const { t } = useTranslation();
 
-  const { data: products = [] } = useQuery({
+  const {
+    data: products = [],
+    isLoading: productsLoading,
+    isError: productsError,
+  } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
+    staleTime: 5 * 60 * 1000,
   });
 
   const { data: cart = [] } = useQuery({
@@ -97,6 +99,13 @@ const TeamShop = () => {
         <div className="shop-section">
           <h1 className="shop-title">{t("teamShop.title")}</h1>
           <p className="shop-text">{t("teamShop.description")}</p>
+
+          {productsLoading && (
+            <p className="shop-text">{t("teamShop.loading")}</p>
+          )}
+          {productsError && (
+            <p className="shop-text">{t("teamShop.loadError")}</p>
+          )}
 
           <Row gutter={[24, 24]}>
             {products.map((product) => (

@@ -152,8 +152,10 @@ const Cart = () => {
                         quantity: item.quantity,
                       })),
                     })
-                      .then(() => {
-                        toast.success("Order sent! Check your email for confirmation.");
+                      .then(({ orderNumber }) => {
+                        toast.success(
+                          `Order #${orderNumber} sent! Check your email for confirmation.`
+                        );
                         resetForm();
                         clearCart();
                       })
