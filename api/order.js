@@ -1,4 +1,9 @@
 import { getSupabaseAdmin } from "./_lib/supabaseAdmin.js";
+import {
+  addProductImages,
+  renderClubEmail,
+  renderCustomerEmail,
+} from "./_lib/orderEmails.js";
 
 // Receives a shop order from the cart page, saves it in Supabase (which prices
 // it from the products table — never trusting prices sent by the browser) and
@@ -6,15 +11,6 @@ import { getSupabaseAdmin } from "./_lib/supabaseAdmin.js";
 
 const RESEND_URL = "https://api.resend.com/emails";
 const MAX_LINES = 30;
-
-const escapeHtml = (value) =>
-  String(value).replace(
-    /[&<>"']/g,
-    (char) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        char
-      ]
-  );
 
 const isNonEmptyString = (value, maxLength) =>
   typeof value === "string" &&
@@ -36,37 +32,6 @@ const sanitizeItems = (items) => {
   }));
 };
 
-const renderItemsTable = (lines, total) => `
-  <table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
-    <thead style="background:#f0f4f8">
-      <tr><th align="left">Product</th><th align="left">Size</th><th>Qty</th><th align="right">Price</th><th align="right">Subtotal</th></tr>
-    </thead>
-    <tbody>
-      ${lines
-        .map(
-          (line) => `<tr>
-        <td>${escapeHtml(line.name)}</td>
-        <td>${escapeHtml(line.size ?? "—")}</td>
-        <td align="center">${line.quantity}</td>
-        <td align="right">${line.unitPrice} EUR</td>
-        <td align="right">${line.subtotal} EUR</td>
-      </tr>`
-        )
-        .join("")}
-    </tbody>
-    <tfoot>
-      <tr><td colspan="4" align="right"><strong>Total</strong></td><td align="right"><strong>${total} EUR</strong></td></tr>
-    </tfoot>
-  </table>`;
-
-const renderItemsText = (lines, total) =>
-  lines
-    .map(
-      (line) =>
-        `- ${line.name}${line.size ? ` (size ${line.size})` : ""} x${line.quantity} = ${line.subtotal} EUR`
-    )
-    .join("\n") + `\nTotal: ${total} EUR`;
-
 const sendEmail = async (apiKey, payload) => {
   const response = await fetch(RESEND_URL, {
     method: "POST",
@@ -80,6 +45,25 @@ const sendEmail = async (apiKey, payload) => {
     throw new Error(`Resend ${response.status}: ${await response.text()}`);
   }
   return response.json();
+};
+
+// Product photos for the email. order.items come back in the same order as
+// the items we sent, so they can be matched by position. Emails still go out
+// without photos if this lookup fails.
+const fetchImagesByIndex = async (supabase, orderItems) => {
+  const ids = [...new Set(orderItems.map((item) => item.id))];
+  const { data, error } = await supabase.from("products").select("id, image").in("id", ids);
+  if (error) {
+    console.error("Could not load product images for email:", error);
+    return [];
+  }
+  const imageById = new Map(data.map((row) => [row.id, row.image]));
+  return orderItems.map((item) => imageById.get(item.id));
+};
+
+const supabaseOrdersUrl = () => {
+  const ref = process.env.VITE_SUPABASE_URL?.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1];
+  return ref ? `https://supabase.com/dashboard/project/${ref}/editor` : null;
 };
 
 export default async function handler(req, res) {
@@ -138,47 +122,40 @@ export default async function handler(req, res) {
     return res.status(502).json({ error: "Could not save your order. Please try again." });
   }
 
-  const lines = order.items;
-  const total = order.total;
   const orderLabel = `#${order.orderNumber}`;
+  const imagesByIndex = await fetchImagesByIndex(supabase, orderItems);
+  const emailData = {
+    orderLabel,
+    customer,
+    lines: addProductImages(order.items, imagesByIndex),
+    total: order.total,
+  };
 
   try {
+    const clubEmail = renderClubEmail({ ...emailData, dashboardUrl: supabaseOrdersUrl() });
     await sendEmail(RESEND_API_KEY, {
       from: ORDER_EMAIL_FROM,
       to: [ORDER_EMAIL_TO],
       reply_to: customer.email,
       subject: `New shop order ${orderLabel} — ${customer.name}`,
-      html: `
-        <h2 style="font-family:Arial,sans-serif">New shop order ${orderLabel}</h2>
-        <p style="font-family:Arial,sans-serif;font-size:14px">
-          <strong>Name:</strong> ${escapeHtml(customer.name)}<br/>
-          <strong>Email:</strong> ${escapeHtml(customer.email)}<br/>
-          <strong>Phone:</strong> ${escapeHtml(customer.phone)}
-        </p>
-        ${renderItemsTable(lines, total)}
-        <p style="font-family:Arial,sans-serif;font-size:12px;color:#666">Reply to this email to contact the customer.</p>`,
-      text: `New shop order ${orderLabel}\n\nName: ${customer.name}\nEmail: ${customer.email}\nPhone: ${customer.phone}\n\n${renderItemsText(lines, total)}`,
+      html: clubEmail.html,
+      text: clubEmail.text,
     });
   } catch (error) {
     // The order is already saved in Supabase, so the club can still see it there.
     console.error(`Failed to send club email for order ${orderLabel}:`, error);
   }
 
+  // The customer confirmation is a courtesy: the order is already saved.
   try {
+    const customerEmail = renderCustomerEmail(emailData);
     await sendEmail(RESEND_API_KEY, {
       from: ORDER_EMAIL_FROM,
       to: [customer.email],
       reply_to: ORDER_EMAIL_TO,
       subject: `Your Aqua Pro order ${orderLabel} / Вашата нарачка ${orderLabel}`,
-      html: `
-        <p style="font-family:Arial,sans-serif;font-size:14px">
-          Hi ${escapeHtml(customer.name)},<br/><br/>
-          Thank you for your order! We will contact you soon about payment and pickup.<br/>
-          Ви благодариме за нарачката! Наскоро ќе ве контактираме за плаќање и подигнување.
-        </p>
-        ${renderItemsTable(lines, total)}
-        <p style="font-family:Arial,sans-serif;font-size:14px">Aqua Pro Swim · aquaproswim.com</p>`,
-      text: `Hi ${customer.name},\n\nThank you for your order! We will contact you soon about payment and pickup.\nВи благодариме за нарачката! Наскоро ќе ве контактираме за плаќање и подигнување.\n\n${renderItemsText(lines, total)}\n\nAqua Pro Swim · aquaproswim.com`,
+      html: customerEmail.html,
+      text: customerEmail.text,
     });
   } catch (error) {
     console.error(`Failed to send customer confirmation for order ${orderLabel}:`, error);
